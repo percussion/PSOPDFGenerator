@@ -1,0 +1,152 @@
+<project basedir="." default="dist" name="PDF">
+	<description>
+       PDF Renderer
+    </description>
+	<!-- set global properties for this build -->
+    
+	<property environment="env"/>
+	<!-- base directory of Rhythmyx installation --> 
+	<property name="rhythmyx.home" location="${env.RHYTHMYX_HOME}"/>
+	<!-- name of Rhythmyx Service -->
+	<property name="rhythmyx.service" value="${env.RHYTHMYX_SERVICE}"/>
+	<!-- base of Axis Path -->
+	<property name="axis_home" location="${env.AXIS_HOME}"/> 
+	<!-- name of our output jar --> 
+	<property name="jarname" value="pdf-render.jar" />	
+	<!-- name of our distribution zip -->
+	<property name="distfile" value="PDFRender.zip" />	
+	
+	<property name="rhino.deploy" value="${rhythmyx.home}/AppServer/server/rx/deploy" /> 
+	<property name="rhino.rxapp"  value="${rhino.deploy}/rxapp.ear/rxapp.war" /> 
+	<property name="rhino.rxpub"  value="${rhino.deploy}/RxServices.war"/> 
+	<property name="rhino.rxapp.lib"    value="${rhino.rxapp}/WEB-INF/lib"/>
+	<property name="rhino.server.lib"  value="${rhythmyx.home}/AppServer/server/rx/lib" /> 
+	<property name="rhino.rxapp.spring-config"
+	value="${rhino.rxapp}/WEB-INF/config/user/spring" />
+	
+	<property name="rhino.rxpub.lib" value="${rhino.rxpub}/WEB-INF/lib" />
+	<property name="rhino.rxpub.spring-config" value="${rhino.rxpub}/WEB-INF/config/spring" /> 
+	
+	<!-- relative paths -->
+	<property name="src" location="src"/>
+	<property name="lib" location="lib"/>
+	<property name="bin" location="bin"/>	
+	<property name="apidoc" location="apidoc" />
+	<!-- used for running Windows commands --> 
+	<property name="comspec" location="${env.ComSpec}"/>
+	<property name="cdrive" location="${env.USERPROFILE}"/> 
+	
+	<!-- Rhythmyx classpath  --> 
+   
+    <path id="rx.class.path">
+		<fileset dir="${lib}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${rhythmyx.home}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+    </path>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+	</target>
+	
+	<target name="clean" description="clean up">
+		<delete dir="${bin}"/>
+		<mkdir dir="${bin}"/>
+	</target>
+	
+	<target name="compile" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${bin} -->
+		<javac srcdir="${src}" destdir="${bin}" debug="true"  classpathref="rx.class.path" />
+		<copy todir="${bin}">
+    		<fileset dir="${src}">
+      			<include name="**/*.xml"/>
+    			<include name="**/*.properties" />
+    			<include name="**/*.betwixt" />
+    		</fileset>
+  		</copy>
+	</target>
+	
+	<target name="javadoc" depends="compile">
+		<mkdir dir="apidoc"/>
+		<javadoc destdir="apidoc" private="true" use="yes" 
+		windowtitle="${ant.project.name}">
+			<packageset dir="${src}" defaultexcludes="yes">
+				<include name="com/percussion/pso/**"/>	
+			</packageset>
+			<classpath refid="rx.class.path"/>
+		</javadoc>
+	</target>
+	
+	<target name="jarbuilder" depends="compile" description="just build the jar, no server">
+	    <delete file="${bin}/log4j.properties" />
+		<propertyfile file="${bin}/build.properties">
+			<entry key="build.number" value="${build.number}"/>
+			<entry key="build.date" type="date" pattern="EEEE MMM dd yyyy" value="now"/>
+    	</propertyfile>
+		<jar jarfile="${jarname}" basedir="${bin}">
+			<include name="lib/**"/>
+			<include name="com/percussion/pso/**"/>
+			<include name="build.properties" /> 
+			<include name="readme.txt" />			
+		</jar>
+
+	</target>
+	
+	<target name="installExtensions">
+		<java classname="com.percussion.util.PSExtensionInstallTool" fork="true">
+		    <arg value="${rhythmyx.home}" />
+			<arg value="${basedir}" />
+			<classpath>
+			    <path refid="rx.class.path" />
+			    <fileset dir="${rhythmyx.home}/AppServer/lib/endorsed" />
+				<fileset dir="${rhythmyx.home}/AppServer/server/rx/lib" />
+			</classpath>			
+		</java>     
+	</target>
+	
+	<target name="testbuild" description="build for local test">		
+		<echo>Stopping ${rhythmyx.service}</echo>
+		
+		<exec executable="net.exe" failonerror="false">
+			<arg line="stop ${rhythmyx.service}"/>
+			<env key="COMSPEC" path="${comspec}"/>
+		</exec>
+		<property name="build.number" value="test build" /> 
+		<antcall target="jarbuilder"/>
+		<delete file="${rhythmyx.home}/AppServer/server/rx/log/server.log" verbose="true" failonerror="false" />
+		<copy file="${jarname}" todir="${rhino.rxapp.lib}" verbose="true" />
+		<copy todir="${rhino.rxapp.lib}" verbose="true">
+			<fileset dir="${lib}" includes="xmlgraphics**.jar avalon-framework**.jar batik-all**.jar serializer**.jar fop.jar" />
+		</copy>
+		<copy todir="${rhino.rxapp}/WEB-INF/config" verbose="true">
+			<fileset dir="WEB-INF/config"  />
+		</copy>
+		<copy todir="${rhino.rxapp}/WEB-INF/classes" verbose="true">
+			<fileset dir="WEB-INF/classes" />
+		</copy>		
+		<!--copy file="mybeans.xml" todir="${rhino.rxapp.spring-config}" verbose="true" /  -->
+		<echo>waiting for shutdown...</echo>
+	    <sleep seconds="5" /> 
+		<echo>Restarting ${rhythmyx.service}</echo>
+		<exec executable="net.exe" failonerror="true">
+			<arg line="start ${rhythmyx.service}"/>
+			<env key="COMSPEC" path="${comspec}"/>
+		</exec>
+	</target>
+	
+	<target name="dist" depends="init, clean, javadoc" description="generate the distribution">
+		<buildnumber/>
+		<antcall target="jarbuilder"/>	
+		<zip destfile="${distfile}">						
+			<zipfileset dir="." includes="${jarname}" prefix="lib" />
+			<fileset dir="." includes="readme.txt, build.number, deploy.xml" />
+			<fileset dir="." includes="license.txt, Extensions.xml" />
+			<zipfileset dir="${apidoc}" prefix="javadoc"/>			
+		</zip>
+			
+	</target>	
+
+</project>
