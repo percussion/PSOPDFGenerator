@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXExtensionHandlerConfiguration handlerName="Java">
+	<Extension categorystring="" context="global/percussion/assembly/" deprecated="no" handler="Java" name="FOPAssembler" restoreRequestParamsOnError="no">
+		<initParam name="com.percussion.user.description">FOP Assembler for PDF</initParam>
+		<initParam name="com.percussion.extension.assembly.libraries">sys_assembly.vm,rx_assembly.vm</initParam>
+		<initParam name="com.percussion.extension.version">2</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<initParam name="className">com.percussion.pso.pdf.FopAssembler</initParam>
+		<initParam name="com.percussion.extension.assembly.fileSuffix">.vm</initParam>
+		<initParam name="com.percussion.extension.assembly.autoReload">yes</initParam>
+		<interface name="com.percussion.services.assembly.IPSAssembler"/>
+		<suppliedResources/>
+	</Extension>
+</PSXExtensionHandlerConfiguration>

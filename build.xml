@@ -42,7 +42,7 @@
 		<fileset dir="${lib}">
 			<include name="**/*.jar"/>
 		</fileset>
-		<fileset dir="${rhythmyx.home}/lib">
+		<fileset dir="${rhino.rxapp.lib}">
 			<include name="**/*.jar"/>
 		</fileset>
     </path>
@@ -121,13 +121,10 @@
 		<copy todir="${rhino.rxapp.lib}" verbose="true">
 			<fileset dir="${lib}" includes="xmlgraphics**.jar avalon-framework**.jar batik-all**.jar serializer**.jar fop.jar" />
 		</copy>
-		<copy todir="${rhino.rxapp}/WEB-INF/config" verbose="true">
-			<fileset dir="WEB-INF/config"  />
+		<copy todir="${rhythmyx.home}/rxconfig" verbose="true">
+			<fileset dir="rxconfig" />
 		</copy>
-		<copy todir="${rhino.rxapp}/WEB-INF/classes" verbose="true">
-			<fileset dir="WEB-INF/classes" />
-		</copy>		
-		<!--copy file="mybeans.xml" todir="${rhino.rxapp.spring-config}" verbose="true" /  -->
+		
 		<echo>waiting for shutdown...</echo>
 	    <sleep seconds="5" /> 
 		<echo>Restarting ${rhythmyx.service}</echo>
@@ -142,6 +139,8 @@
 		<antcall target="jarbuilder"/>	
 		<zip destfile="${distfile}">						
 			<zipfileset dir="." includes="${jarname}" prefix="lib" />
+			<zipfileset dir="lib" prefix="lib" />
+			<zipfileset dir="rxconfig" prefix="rxconfig" />
 			<fileset dir="." includes="readme.txt, build.number, deploy.xml" />
 			<fileset dir="." includes="license.txt, Extensions.xml" />
 			<zipfileset dir="${apidoc}" prefix="javadoc"/>			
