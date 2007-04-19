@@ -97,7 +97,7 @@ public class FopAssembler extends PSVelocityAssembler implements IPSAssembler
       {
          String rxRootDir = (String)PSRhythmyxInfoLocator.getRhythmyxInfo()
             .getProperty(IPSRhythmyxInfo.Key.ROOT_DIRECTORY);
-         String fopConfigFilename = rxRootDir + "/rxconfig/Server/fop.properties";
+         String fopConfigFilename = rxRootDir + "/rxconfig/Server/fop.config";
          DefaultConfigurationBuilder cfgBuilder = new DefaultConfigurationBuilder();
          Configuration cfg = cfgBuilder.buildFromFile(new File(fopConfigFilename));
          fopFactory.setUserConfig(cfg);
