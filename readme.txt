@@ -11,4 +11,6 @@ ant -f deploy.xml
 You will then be able to start your Rhythmyx server and add templates to your existing
 content types using the new "FopAssembler".  Setting the MIME Type of the template will 
 set the output format.  For more details see the enclosed JavaDoc.
- 
+
+For more details, see Instructions.pdf
+

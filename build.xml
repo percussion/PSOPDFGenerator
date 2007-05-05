@@ -15,6 +15,7 @@
 	<property name="jarname" value="pdf-render.jar" />	
 	<!-- name of our distribution zip -->
 	<property name="distfile" value="PDFRender.zip" />	
+	<property name="testdistfile" value="PDFRenderTest.zip"/>
 	
 	<property name="rhino.deploy" value="${rhythmyx.home}/AppServer/server/rx/deploy" /> 
 	<property name="rhino.rxapp"  value="${rhino.deploy}/rxapp.ear/rxapp.war" /> 
@@ -134,6 +135,19 @@
 		</exec>
 	</target>
 	
+	<target name="remotetest" depends="init,compile" description="build zip for remote test" >
+		<property name="build.number" value="test build" /> 
+		<antcall target="jarbuilder"/>
+		<zip destfile="${testdistfile}">						
+			<zipfileset dir="." includes="${jarname}" prefix="lib" />
+			<zipfileset dir="lib" prefix="lib" />
+			<zipfileset dir="rxconfig" prefix="rxconfig" />
+			<zipfileset dir="Samples" prefix="Samples" />
+			<fileset dir="." includes="readme.txt, build.number, deploy.xml" />
+			<fileset dir="." includes="license.txt, Extensions.xml" />	
+		</zip>
+	</target>
+	
 	<target name="dist" depends="init, clean, javadoc" description="generate the distribution">
 		<buildnumber/>
 		<antcall target="jarbuilder"/>	
@@ -142,7 +156,8 @@
 			<zipfileset dir="lib" prefix="lib" />
 			<zipfileset dir="rxconfig" prefix="rxconfig" />
 			<fileset dir="." includes="readme.txt, build.number, deploy.xml" />
-			<fileset dir="." includes="license.txt, Extensions.xml" />
+			<fileset dir="." includes="license.txt, Extensions.xml, Instructions.pdf" />
+			<zipfileset dir="Samples" prefix="Samples" />
 			<zipfileset dir="${apidoc}" prefix="javadoc"/>			
 		</zip>
 			

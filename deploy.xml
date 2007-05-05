@@ -49,6 +49,13 @@
 		    	<fileset dir="rxconfig" />
 		    </copy>
 	</target>
+
+	<target name="deploySamples" description="Deploy Sample code">
+	       <fail unless="rhino.rxapp.lib" message="You must set the RHYTHMYX_HOME environment variable" />		
+		   <copy todir="${rhino.home}/rx_resources" verbose="true">
+		      <fileset dir="Samples" includes="images/** stylesheets/** " />
+		   </copy>  
+	</target>
 	
 	<target name="dist" description="Default target deploys all">
 		<fail unless="rhino.home" message="You must set the RHYTHMYX_HOME environment variable" />		
