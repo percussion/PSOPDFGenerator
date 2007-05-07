@@ -3,6 +3,7 @@
  *  
  * @author DavidBenua
  *
+ * Copyright 2007 Percussion Software, all rights reserved
  */
 package com.percussion.pso.fop;
 
@@ -70,7 +71,7 @@ import com.percussion.utils.string.PSStringUtils;
  * the template is one of those supported by FOP, it will be generated.  Otherwise, the output will be in PDF format. 
  * Note that by default the Rhythmyx Workbench does not support PDF and other such formats.  
  * These can be added to the 
- * <code>Rhythmyx/rxconfig/Workbench/mimemapwb.properties</code> file. 
+ * <code>mimemapwb.properties</code> file. 
  * Some additional configuration to the renderers found in <code>fop.config</code> may be 
  * necessary for formats other than PDF.   
  * <p>
@@ -78,6 +79,8 @@ import com.percussion.utils.string.PSStringUtils;
  * parameter "showxml" with any non-blank value.  This will cause the 
  * FOP Assembler to return the XML that would have otherwise been passed
  * to the Apache FO Processor.  
+ * <p>
+ * See Instructions.pdf for further information. 
  * 
  * @author DavidBenua
  *
@@ -291,11 +294,7 @@ public class FopAssembler extends PSVelocityAssembler implements IPSAssembler
     * Array of valid MIME types for the FOP processor.  
     */
    private static String[] validMimeTypes = null;  
-//     {MimeConstants.MIME_PDF, 
-//      MimeConstants.MIME_RTF, MimeConstants.MIME_FOP_PRINT, 
-//      MimeConstants.MIME_EPS, MimeConstants.MIME_PCL, 
-//      MimeConstants.MIME_PLAIN_TEXT}; 
-   
+
    private static final Expression FOP_AUTHOR =  PSJexlEvaluator.createStaticExpression("$FOP.author"); 
    private static final Expression FOP_CREATOR =  PSJexlEvaluator.createStaticExpression("$FOP.creator"); 
    private static final Expression FOP_PRODUCER =  PSJexlEvaluator.createStaticExpression("$FOP.producer"); 
@@ -312,5 +311,10 @@ public class FopAssembler extends PSVelocityAssembler implements IPSAssembler
     */
    public static final String SHOW_XML_PARAMETER = "showxml";
    
+   /**
+    * Extension Parameter for setting allowable MIME Types.  
+    * Changing this parameters in the Extension Registration allows 
+    * the implementer to add other types supported by the FO Processor. 
+    */
    public static final String INIT_PARAMETER_MIME_TYPES = "com.percussion.pso.fop.SupportedMimeTypes"; 
 }

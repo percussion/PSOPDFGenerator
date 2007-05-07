@@ -14,8 +14,8 @@
 	<!-- name of our output jar --> 
 	<property name="jarname" value="pdf-render.jar" />	
 	<!-- name of our distribution zip -->
-	<property name="distfile" value="PDFRender.zip" />	
-	<property name="testdistfile" value="PDFRenderTest.zip"/>
+	<property name="distfile" value="FOPAssembler.zip" />	
+	<property name="testdistfile" value="FOPAssemblerTest.zip"/>
 	
 	<property name="rhino.deploy" value="${rhythmyx.home}/AppServer/server/rx/deploy" /> 
 	<property name="rhino.rxapp"  value="${rhino.deploy}/rxapp.ear/rxapp.war" /> 
