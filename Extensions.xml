@@ -12,4 +12,12 @@
 		<interface name="com.percussion.services.assembly.IPSAssembler"/>		
 		<suppliedResources/>
 	</Extension>
+		<Extension name="session" context="global/percussion/system" handler="Java" categorystring="jexl" deprecated="no">
+		<initParam name="com.percussion.user.description">Jexl extension for certain session data required for authentication.</initParam>
+		<initParam name="com.percussion.extension.version">1</initParam>
+		<initParam name="className">com.percussion.services.assembly.jexl.PSSessionUtils</initParam>
+		<initParam name="com.percussion.extension.reentrant">yes</initParam>
+		<interface name="com.percussion.extension.IPSJexlExpression"/>
+		<suppliedResources/>
+	</Extension>	
 </PSXExtensionHandlerConfiguration>

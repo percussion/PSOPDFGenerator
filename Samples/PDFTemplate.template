@@ -33,19 +33,28 @@
       </binding>
       <binding id="8">
         <execution-order>4</execution-order>
-        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "rx_resources/stylesheets/FOPExtractBody.xsl")</expression>
+        <expression>$rx.session.getPSSessionID() </expression>
         <id>0</id>
         <jexl-expression id="9">
-          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "rx_resources/stylesheets/FOPExtractBody.xsl")</expression>
+          <expression>$rx.session.getPSSessionID() </expression>
         </jexl-expression>
-        <variable>$callout</variable>
+        <variable>$XSLParam.sessionid</variable>
       </binding>
       <binding id="10">
         <execution-order>5</execution-order>
-        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "rx_resources/stylesheets/FOPExtractBody.xsl")</expression>
+        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
         <id>0</id>
         <jexl-expression id="11">
-          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "rx_resources/stylesheets/FOPExtractBody.xsl")</expression>
+          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
+        </jexl-expression>
+        <variable>$callout</variable>
+      </binding>
+      <binding id="12">
+        <execution-order>6</execution-order>
+        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
+        <id>0</id>
+        <jexl-expression id="13">
+          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
         </jexl-expression>
         <variable>$body</variable>
       </binding>

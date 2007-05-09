@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+    <xsl:param name="sessionid" />
 	<xsl:output omit-xml-declaration="yes"/>
 	<xsl:template match="/">
-		<fo:block-container><fo:block>
+	    <fo:block-container>
+		<fo:block>
 			<xsl:apply-templates select="*" />
 		</fo:block>
 		</fo:block-container>
@@ -46,15 +48,19 @@
 		</fo:inline>
 	</xsl:template>
 	<xsl:template match="img">
-	    <fo:block font-weight="bold"
-         keep-with-next.within-column="always">
-            <xsl:value-of select="@title" />	
-        </fo:block>
-		<fo:block font-size="10pt" font-family="Times" line-height="11pt" space-after.optimum="15pt">
+	    
+		<fo:block font-size="10pt" font-family="Times" line-height="11pt" space-after.optimum="15pt" keep-with-next.within-column="always">
 			<fo:external-graphic content-height="100%" content-width="100%">
-				<xsl:attribute name="src"><xsl:value-of select="./@src"/></xsl:attribute>
+			  <xsl:attribute name="src">
+			    <xsl:call-template name="rewriteURL">
+			        <xsl:with-param name="url"><xsl:value-of select="@src" /></xsl:with-param>
+			    </xsl:call-template>
+			  </xsl:attribute>
 			</fo:external-graphic>
 		</fo:block>
+		<fo:block font-weight="bold">
+            <xsl:value-of select="@title" />	
+        </fo:block>
 	</xsl:template>
 	<xsl:template match="table">
 		<fo:table width="15cm" table-layout="fixed">
@@ -79,5 +85,9 @@
 				</xsl:for-each>
 			</fo:table-body>
 		</fo:table>
+	</xsl:template>
+	<xsl:template name="rewriteURL">
+	   <xsl:param name="url" />
+	   url(<xsl:value-of select="$url"/>&amp;pssessionid=<xsl:value-of select="$sessionid"/>)
 	</xsl:template>
 </xsl:stylesheet>
