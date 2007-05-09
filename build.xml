@@ -12,7 +12,7 @@
 	<!-- base of Axis Path -->
 	<property name="axis_home" location="${env.AXIS_HOME}"/> 
 	<!-- name of our output jar --> 
-	<property name="jarname" value="fop-assembler.jar" />	
+	<property name="jarname" value="rx-fop.jar" />	
 	<!-- name of our distribution zip -->
 	<property name="distfile" value="FOPAssembler.zip" />	
 	<property name="testdistfile" value="FOPAssemblerTest.zip"/>
