@@ -1,0 +1,186 @@
+<h1 id="rhythmyx_fop_assembler">Rhythmyx FOP Assembler</h1>
+
+<p>Welcome to the PSO FOP Assembler.</p>
+
+<p>This project installs an Assembly Plugin that calls the Apache FOP processor.</p>
+
+<p>The FOP Assembler is used to assemble content into PDF, Postscript and other common printable formats, using the Apache FOP processor. The user can create templates that take full advantage of XSL FO without having to write (or debug) large amounts of XSLT.</p>
+
+<p>Contributors use normal Rhythmyx content types, and enter their content using the normal editor controls.  Implementers define one or more FOP Templates that produce the proper output format for that particular content type. Since these are ordinary Rhythmyx templates, multiple templates can be created with different formats as required.</p>
+
+<h4 id="example">Example</h4>
+
+<p>We have built a simple example using the Rhythmyx Fast Forward content types.  The contributor enters the content item using the Generic Content Editor.</p>
+
+<p><img src="img/example_generic_content_editor.png" alt="Example - Generic Content Editor" title="" /></p>
+
+<p>Using the Content Explorer, the user can then preview the content item with the PDF template.</p>
+
+<p><img src="img/example_preview_as_pdf.png" alt="Example - Preview as PDF" title="" /></p>
+
+<p>This results in a PDF displaying on the screen.</p>
+
+<p><img src="img/example_rendered_pdf.png" alt="Example - Rendered PDF" title="" /></p>
+
+<h2 id="getting_started">Getting started</h2>
+
+<p>Before you start:</p>
+
+<ul>
+<li>The <code>JAVA_HOME</code> and <code>RHYTHMYX_HOME</code> environment variables must be set.</li>
+<li><code>RHYTHMYX_HOME</code> should point to the root of the Rhythmyx installation on your server.</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+
+<p><em>Note: Version 7.+ is installed into the jetty web applcation server included with Rhythmyx. JBOSS is no longer supported.</em></p>
+
+<p>Clone the project repository:</p>
+
+<p><code>git clone git@github.com:percussion/PSOPDFGenerator.git</code></p>
+
+<p>Run the following command:</p>
+
+<ul>
+<li><strong>Linux</strong>: <code>./gradlew install</code></li>
+<li><strong>Windows</strong>: <code>gradlew install</code></li>
+</ul>
+
+<p>You will then be able to start your Rhythmyx server and add templates to your existing
+content types using the new FOP Assembler. Setting the MIME Type of the template will
+set the output format.</p>
+
+<h3 id="adding_mime_types_to_the_workbench">Adding MIME types to the Workbench</h3>
+
+<p>The FOP Assembler as deployed by the deployment script supports the following MIME types:</p>
+
+<ul>
+<li>application/pdf</li>
+<li>application/postscript</li>
+<li>application/x-pcl</li>
+<li>text/plain</li>
+<li>text/richtext</li>
+<li>text/rtf</li>
+<li>application/rtf</li>
+<li>image/png</li>
+</ul>
+
+<p>The standard Workbench installation does not include all of these types in the <strong>MIME Type</strong> drop down control.</p>
+
+<p><img src="img/mime_type_dropdown.png" alt="MIME Type Dropdown" title="" /></p>
+
+<p>There are 2 files in the Workbench installation that need to be modified. Both of them are named <em>mimemapwb.properties</em>. The <em>Default</em> properties are located in the Workbench plugin folder:</p>
+
+<ul>
+<li><strong>Linux</strong>: <code>/Rhythmyx/eclipse/plugins/com.percussion.workbench_1.0.0/default-config/rxconfig/Workbench</code></li>
+<li><strong>Windows</strong>: <code>\Rhythmyx\eclipse\plugins\com.percussion.workbench_1.0.0\default-config\rxconfig\Workbench</code></li>
+</ul>
+
+<p>The <em>User</em> properties are found in the Eclipse Workspace folder:</p>
+
+<ul>
+<li><strong>Linux</strong>: <code>/Rhythmyx/rxconfig/Workbench/users/&lt;username&gt;/workspaces/workspace/.metadata/.plugins/com.percussion.workbench.ui/rxconfig/Workbench</code></li>
+<li><strong>Windows</strong>: <code>\Rhythmyx\rxconfig\Workbench\users\&lt;username&gt;\workspaces\workspace\.metadata\.plugins\com.percussion.workbench.ui\rxconfig\Workbench</code></li>
+</ul>
+
+<p>Shut down the Workbench if it is running and edit the files with your favorite text editor. In both files, add the following lines to the edit of the file:</p>
+
+<pre><code>pdf=application/pdf
+
+eps=application/postscript
+
+pcl=application/x-pcl
+
+rtf=application/rtf
+
+rtf2=text/rtf
+
+png=image/png
+</code></pre>
+
+<p>Restart the Workbench and you should see the new types added to the MIME type dropdown.</p>
+
+<h2 id="importing_the_sample_templates_optional">Importing the Sample Templates (Optional)</h2>
+
+<h3 id="pdf_sample">PDF Sample</h3>
+
+<p>A sample PDF template is included for reference in the <em>Samples</em> directory.</p>
+
+<p>Run the following command to install the images and stylesheets:</p>
+
+<ul>
+<li><strong>Linux</strong>: <code>./gradlew deploySamples</code></li>
+<li><strong>Windows</strong>: <code>gradlew deploySamples</code></li>
+</ul>
+
+<p>Open the Workbench and select the <strong>Content Design</strong> view and use the <strong>File – Import</strong> menu to import Templates. Use the <strong>Browse</strong> button to locate the sample <em>PDFTemplate.template</em>.</p>
+
+<p><em>Note that if you are using 2 different machines, this is relative to the workbench, not the Server.</em></p>
+
+<p><img src="img/import_templates.png" alt="Import Templates" title="" /></p>
+
+<p>Select the <strong>PDFTemplate</strong> entry. Once you press the <strong>Finish</strong> button, the template will appear in the <strong>Assembly Design</strong> view.</p>
+
+<p>You must add your new template to the appropriate Communities.</p>
+
+<ul>
+<li>Right-click on the template and open the <strong>Security</strong> dialog.</li>
+<li>Add any communities, and check the <strong>Read</strong> box.</li>
+</ul>
+
+<p><img src="img/select_communities.png" alt="Select Communities" title="" /></p>
+
+<p>You must also add the template to the <strong>Allowed Templates</strong> of any Content Types (in this example <strong>rffGeneric</strong>).</p>
+
+<ul>
+<li>In the Assembly design view, Select <strong>PDFTemplate</strong> and <strong>Copy</strong> it (with ctrl-C).</li>
+<li>Switch to the <strong>Content Design</strong> view, and expand <strong>Generic</strong>.</li>
+<li>Click on the <strong>Allowed Templates and XSL Variants</strong> and Paste. This will add <strong>PDFTemplate</strong> to the list of allowed templates.</li>
+</ul>
+
+<p><img src="img/set_allowed_templates.png" alt="Set Allowed Templates" title="" /></p>
+
+<p>You are now ready to use the sample template.</p>
+
+<h3 id="png_sample">PNG Sample</h3>
+
+<p>A sample PNG template is included for reference in the <em>Samples</em> directory. Install and configure the PNG template using the process described above for the PDF template.</p>
+
+<h2 id="extending_the_sample_template">Extending the Sample Template</h2>
+
+<h3 id="changing_the_mime_type">Changing the MIME Type</h3>
+
+<p>The sample template is configured to supply PDF output. You can change this by selecting a different type (such as <code>application/postcript</code>) and then previewing a Generic content item. Save the output to disk and open it in your favorite text editor.</p>
+
+<h3 id="template_source">Template Source</h3>
+
+<p>Examine the template source. You will notice that it returns XML using the FO namespace. Apache and the W3C maintain extensive references and tutorials on FO. We are using FOP version 0.93, but expect that the FOP Assembler will be upward compatible with future versions.</p>
+
+<p>Notice that Static Images can be referenced in the template. Place your images in the <em>rx_resources</em> folder.</p>
+
+<pre><code>&lt;fo:static-content flow-name="xsl-region-before"&gt;
+    &lt;fo:block&gt;
+        &lt;fo:external-graphic src="rx_resources/images/PDFmarginTop.jpg" content-width="20cm"/&gt;
+    &lt;/fo:block&gt;
+&lt;/fo:static-content&gt;
+</code></pre>
+
+<h3 id="bindings">Bindings</h3>
+
+<p>Examine the bindings of the Sample template. You will notice that both the <strong>callout</strong> and <strong>body</strong> fields are processed with <strong>psoTransform</strong>. If your content types have additional fields, you can add them to the bindings. Give each new field a unique name.</p>
+
+<h3 id="editing_xsl_stylesheets">Editing XSL Stylesheets</h3>
+
+<p>The XSL Stylesheet provided with the sample supports simple formatting (bold, italics, underline), as well as tables and images. It can be extended to include other types of processing. The Antenna House XSL FO Tutorial contains more sophisticated stylesheets for processing XHTML to FO. See the References section below.</p>
+
+<p>You can edit the XSL directly within the Workbench. Go to the System Design view, expand <strong>CMS Files</strong> and then <strong>rx_resources</strong> and then <strong>stylesheets</strong>. By default this will open in the Text editor, but you can configure your workbench to use any editor for XSL files using the Eclipse Preferences menu.</p>
+
+<p><img src="img/editing_style_sheets.png" alt="Editing Style Sheets" title="" /></p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><strong>Apache FOP Website:</strong> <a href="http://xmlgraphics.apache.org/fop/">http://xmlgraphics.apache.org/fop/</a></li>
+<li><strong>W3C FO Specification:</strong> <a href="http://www.w3.org/TR/2001/REC-xsl-20011015/">http://www.w3.org/TR/2001/REC-xsl-20011015/</a></li>
+<li><strong>XSL FO Tutorial:</strong> <a href="http://www.antennahouse.com/XSLsample/XSLsample.htm">http://www.antennahouse.com/XSLsample/XSLsample.htm</a></li>
+</ul>
