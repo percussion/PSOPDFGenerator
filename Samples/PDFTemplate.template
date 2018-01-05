@@ -42,19 +42,19 @@
       </binding>
       <binding id="10">
         <execution-order>5</execution-order>
-        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
+        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
         <id>0</id>
         <jexl-expression id="11">
-          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
+          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:callout").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl", $XSLParam)</expression>
         </jexl-expression>
         <variable>$callout</variable>
       </binding>
       <binding id="12">
         <execution-order>6</execution-order>
-        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
+        <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
         <id>0</id>
         <jexl-expression id="13">
-          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
+          <expression>$user.psoTransform.transform($sys.item.getProperty("rx:body").String, "file:///home/admin/Rhythmyx/rx_resources/stylesheets/FOPExtractBody.xsl",$XSLParam)</expression>
         </jexl-expression>
         <variable>$body</variable>
       </binding>
@@ -91,14 +91,14 @@
 			&lt;!-- end: defines page layout --&gt;
 			&lt;!-- start page-sequence--&gt;
 			&lt;fo:page-sequence initial-page-number="1" master-reference="simple"&gt;
-				
+
 				&lt;fo:static-content flow-name="xsl-region-after"&gt;
 					&lt;fo:block text-align="end" font-size="10pt" font-family="sans-serif" line-height="14pt" color="white"&gt;
 						#displayfield("displaytitle") - p.
                &lt;fo:page-number/&gt;
 					&lt;/fo:block&gt;
 				&lt;/fo:static-content&gt;
-				
+
 				&lt;fo:static-content flow-name="xsl-region-start"&gt;
 					&lt;fo:block/&gt;
 				&lt;/fo:static-content&gt;
@@ -106,13 +106,13 @@
 				&lt;fo:static-content flow-name="xsl-region-end"&gt;
 					&lt;fo:block/&gt;
 				&lt;/fo:static-content&gt;
-				
+
 				&lt;fo:static-content flow-name="xsl-region-before"&gt;
 					&lt;fo:block&gt;
-						&lt;fo:external-graphic src="rx_resources/images/PDFmarginTop.jpg" content-width="20cm"/&gt;
+						&lt;fo:external-graphic src="../rx_resources/images/PDFmarginTop.jpg" content-width="20cm"/&gt;
 					&lt;/fo:block&gt;
 				&lt;/fo:static-content&gt;
-				
+
 				&lt;!-- start fo:flow --&gt;
 				&lt;fo:flow flow-name="xsl-region-body"&gt;
 					&lt;!-- SET THE INTERNAL MARGINS SO THIS TEXT LOOKS CLEAR --&gt;
@@ -120,8 +120,8 @@
 						&lt;!-- this defines a title --&gt;
 						&lt;fo:block font-size="24pt" font-family="sans-serif" font-style="italic" line-height="24pt" space-after.optimum="50pt" color="white" text-align="right"&gt;
 							#displayfield("displaytitle")
-						&lt;/fo:block&gt;			
-						
+						&lt;/fo:block&gt;
+
 						&lt;!-- this defines the Abstract Area --&gt;
 						&lt;fo:block margin-top="20mm" font-size="14pt" font-family="sans-serif" line-height="15pt" space-after.minimum="20pt"&gt;
 							&lt;fo:inline text-decoration="underline" font-weight="bold"&gt;Tag Line&lt;/fo:inline&gt;
@@ -129,7 +129,7 @@
 						&lt;fo:block font-size="12pt" font-family="sans-serif" line-height="15pt" space-after.optimum="50pt" text-align="justify"&gt;
 							#displayfield("description")
 						&lt;/fo:block&gt;
-						
+
 						&lt;!-- this defines the Callout  Area --&gt;
 						&lt;fo:block margin-top="10mm" margin-bottom="4mm" font-size="14pt" font-family="sans-serif" line-height="15pt" space-after.optimum="20pt"&gt;
 							&lt;fo:inline text-decoration="underline" font-weight="bold"&gt;Summary&lt;/fo:inline&gt;
@@ -138,8 +138,8 @@
 						&lt;fo:block font-size="10pt" font-weight="normal" font-family="sans-serif" line-height="15pt" space-after.optimum="30pt" text-align="justify"&gt;
 							$callout
 						&lt;/fo:block&gt;
-						&lt;!-- end of block --&gt; 
-						
+						&lt;!-- end of block --&gt;
+
 						&lt;!-- this defines the Body  Area --&gt;
 						&lt;fo:block margin-top="10mm" margin-bottom="4mm" font-size="14pt" font-family="sans-serif" line-height="15pt" space-after.optimum="20pt"&gt;
 							&lt;fo:inline text-decoration="underline" font-weight="bold"&gt;Detail&lt;/fo:inline&gt;

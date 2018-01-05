@@ -1,0 +1,109 @@
+apply plugin: 'java'
+
+group='com.percussion'
+version='7.0.0'
+
+configurations {
+    deploy
+}
+
+sourceSets {
+    deploy {}
+}
+
+repositories {
+
+    flatDir {
+
+        dirs "${System.getenv('RHYTHMYX_HOME')}/jetty/base/webapps/Rhythmyx/WEB-INF/lib"
+        dirs "${System.getenv('RHYTHMYX_HOME')}/jetty/base/webapps/RxServices/WEB-INF/lib"
+        dirs "${System.getenv('RHYTHMYX_HOME')}/jetty/defaults/lib/perc"
+        dirs "lib"
+    }
+
+    jcenter()
+}
+
+dependencies {
+
+    compile 'org.slf4j:slf4j-api:1.7.22'
+
+    testCompile 'junit:junit:4.12'
+
+    compile('org.apache.xmlgraphics:fop:2.2') {
+        exclude group: 'org.apache.avalon.framework'
+    }
+
+    compile 'avalon-framework:avalon-framework:4.1.5'
+
+    compile name: 'commons-lang-2.4'
+    compile name: 'commons-jexl-1.1.1-patched'
+    compile name: 'rxclient'
+    compile name: 'rxservices'
+    compile name: 'rxutils'
+    compile name: 'rxbusiness'
+
+    deployCompile name: 'rxclient'
+    deployCompile name: 'rxserver'
+    deployCompile name: 'rxbusiness'
+    deployCompile name: 'rxutils'
+    deployCompile name: 'commons-lang-2.4'
+    deployCompile name: 'commons-logging-1.1.1'
+    deployCompile name: 'rxservices'
+    deployCompile name: 'jcr-1.0'
+    deployCompile name: 'servlet'
+    deployCompile name: 'commons-httpclient-3.1'
+    deployCompile name: 'commons-collections-3.2.2'
+    deployCompile name: 'commons-jexl-1.1.1-patched'
+}
+
+task copyFopAndJexlToServer(type: Copy) {
+    fileMode = 0750
+    from('lib') {
+        include "commons-jexl-1.1.1-patched.jar"
+    }
+    from findJar('fop')
+    from findJar('avalon-framework')
+    from findJar('xmlgraphics')
+    from findJar('batik')
+    into "${System.getenv('RHYTHMYX_HOME')}/jetty/defaults/lib/perc"
+}
+
+def findJar(String prefix) {
+    configurations.compile.filter {
+        it.name.startsWith(prefix)
+    }
+}
+
+task deploySamples(type: Copy) {
+    fileMode = 0750
+    from('Samples') {
+        include '**/*.xsl'
+        include '**/*.jpg'
+        include '**/*.png'
+    }
+    into "${System.getenv('RHYTHMYX_HOME')}/rx_resources"
+}
+
+task installExtensions(type: JavaExec, dependsOn: 'jar') {
+    classpath = sourceSets.deploy.runtimeClasspath
+    main = 'com.percussion.util.PSExtensionInstallTool'
+    args System.getenv('RHYTHMYX_HOME'), '.'
+}
+
+task installJars(type: Copy) {
+    from "build/libs/${rootProject.name}-${version}.jar"
+    into "${System.getenv('RHYTHMYX_HOME')}/jetty/base/webapps/Rhythmyx/WEB-INF/lib"
+}
+
+task cleanConfig(type: Delete) {
+    delete "${System.getenv('RHYTHMYX_HOME')}/rxconfig/Server/fop.config"
+}
+
+task installConfig(type: Copy, dependsOn: cleanConfig) {
+    from "rxconfig"
+    into "${System.getenv('RHYTHMYX_HOME')}/rxconfig"
+}
+
+task deployServer(dependsOn: ['installJars', 'installConfig'])
+task install(dependsOn: ['copyFopAndJexlToServer', 'installExtensions', 'deployServer'])
