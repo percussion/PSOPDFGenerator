@@ -18,6 +18,7 @@ repositories {
         dirs "${System.getenv('RHYTHMYX_HOME')}/jetty/base/webapps/Rhythmyx/WEB-INF/lib"
         dirs "${System.getenv('RHYTHMYX_HOME')}/jetty/base/webapps/RxServices/WEB-INF/lib"
         dirs "${System.getenv('RHYTHMYX_HOME')}/jetty/defaults/lib/perc"
+		dirs "${System.getenv('RHYTHMYX_HOME')}/jetty/defaults/lib/perc-logging" 
         dirs "lib"
     }
 
@@ -48,8 +49,16 @@ dependencies {
     deployCompile name: 'rxbusiness'
     deployCompile name: 'rxutils'
     deployCompile name: 'commons-lang-2.4'
-    deployCompile name: 'commons-logging-1.1.1'
-    deployCompile name: 'rxservices'
+    deployCompile name: 'commons-logging-1.2'
+	deployCompile name: 'log4j-1.2-api-2.12.1'
+	deployCompile name: 'log4j-api-2.12.1'
+	deployCompile name: 'log4j-appserver-2.12.1'
+	deployCompile name: 'log4j-core-2.12.1'
+	deployCompile name: 'log4j-jcl-2.12.1'
+	deployCompile name: 'log4j-jul-2.12.1'
+	deployCompile name: 'log4j-slf4j-impl-2.12.1'
+	deployCompile name: 'log4j-web-2.12.1'
+	deployCompile name: 'rxservices'
     deployCompile name: 'jcr-1.0'
     deployCompile name: 'servlet'
     deployCompile name: 'commons-httpclient-3.1'
