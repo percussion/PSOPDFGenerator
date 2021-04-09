@@ -1,3 +1,6 @@
+# This project has been Archived
+The project and sources have been merged with the perc-toolkit and will be included in the 8.0.3 version of Percussion CMS
+
 # Rhythmyx FOP Assembler
 
 Welcome to the PSO FOP Assembler.
